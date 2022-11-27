@@ -15,6 +15,16 @@ from sqlalchemy import create_engine
 app = Flask(__name__)
 
 def tokenize(text):
+    """A function that breaks down input text from sentences into words
+    and words to their roots. 
+
+    Args:
+        text (str): A sentence input to be classified.
+
+    Returns:
+        clean_tokens: A sentence that has been broken down into 
+        words that are in their root form
+    """
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -46,6 +56,24 @@ def index():
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
+        {
+            'data': [
+                Bar(
+                    x=genre_names,
+                    y=genre_counts
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Message Genres',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Genre"
+                }
+            }
+        },
         {
             'data': [
                 Bar(
