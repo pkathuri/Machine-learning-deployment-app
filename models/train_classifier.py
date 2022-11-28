@@ -29,7 +29,7 @@ import pickle
 
 
 def load_data(database_filepath):
-    """A function 
+    """A function that loads data into a database guven a database filepath
 
     Args:
         database_filepath:The path to a file in the database.
@@ -97,7 +97,7 @@ def build_model():
 
 
 def evaluate_model(model, X_test, y_test, category_names):
-    """_summary_
+    """A function that returns the classification report of a model.
 
     Args:
         model : A machine learning model for classification.
