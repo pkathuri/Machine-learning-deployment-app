@@ -84,17 +84,28 @@ def build_model():
     """A function that describes the model to be fitted for text classification
 
     """
-    # The model for the grid search pipeline could not be run in this script due to hardware limitations.
+    classifier=MultiOutputClassifier(RandomForestClassifier())
+    pipeline=Pipeline(
+              [('cv', CountVectorizer(tokenizer=tokenize)),
+              ('tfidf', TfidfTransformer()),
+              ('clf',classifier)]   
+              )
+    parameters={"clf__estimator__criterion":['gini','entropy'],
+            "clf__estimator__max_features":['auto','sqrt','log2'],
+             "clf__estimator__bootstrap":[True,False]}
+    
+    cv = GridSearchCV(pipeline,param_grid=parameters,verbose=0,cv=2)
+    
     # parameters={"clf__estimator__criterion":['gini','entropy'],
     #         "clf__estimator__max_features":['auto','sqrt','log2'],
     #          "clf__estimator__bootstrap":[True,False]}
     # cv = GridSearchCV(pipeline,param_grid=parameters,verbose=0,cv=2)
-    return   Pipeline(
-             [('cv', CountVectorizer(tokenizer=tokenize)),
-             ('tfidf', TfidfTransformer()),
-             ('clf',MultiOutputClassifier(RandomForestClassifier(bootstrap=True,criterion='entropy',max_features='log2')))]   
-             )
-
+    # return   Pipeline(
+    #          [('cv', CountVectorizer(tokenizer=tokenize)),
+    #          ('tfidf', TfidfTransformer()),
+    #          ('clf',MultiOutputClassifier(RandomForestClassifier(bootstrap=True,criterion='entropy',max_features='log2')))]   
+    #          )
+    return cv
 
 def evaluate_model(model, X_test, y_test, category_names):
     """A function that returns the classification report of a model.
